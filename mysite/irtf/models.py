@@ -160,7 +160,7 @@ class Mdwarfs(models.Model):
 
 
 class Targets(models.Model):
-    name = models.TextField(db_column='Name', blank=True, null=True)  # Field name made lowercase.
+    name = models.TextField(db_column='Name', blank=True, null=False, primary_key=True)  # Field name made lowercase.
     miles = models.TextField(db_column='MILES', blank=True, null=True)  # Field name made lowercase.
     cat = models.TextField(db_column='CaT', blank=True, null=True)  # Field name made lowercase.
     spt = models.TextField(db_column='SpT', blank=True, null=True)  # Field name made lowercase.
@@ -231,6 +231,9 @@ class Targets(models.Model):
     sdss_z = models.FloatField(blank=True, null=True)
     sdss_error = models.FloatField(db_column='sdss__error', blank=True, null=True)  # Field renamed because it contained more than one '_' in a row.
     sdss_z_error = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         managed = False
