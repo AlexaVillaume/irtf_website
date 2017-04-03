@@ -1,0 +1,9 @@
+{% if output %}
+    <ul>
+    {% for name in output %}
+        <li>{{name}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No stars.</p>
+{% endif %}
