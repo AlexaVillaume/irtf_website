@@ -2,7 +2,12 @@ from django import forms
 from .models import Targets
 
 class IndexForm(forms.ModelForm):
-    name = forms.CharField(max_length=128, help_text="Please enter the star name.")
+    #name = forms.CharField(max_length=128, help_text="Please enter the star name.")
+    teff_min = forms.CharField()
+    teff_max = forms.CharField()
+
+    logg_min = forms.CharField()
+    logg_max = forms.CharField()
 
     # An inline class to provide additional information on the form.
     class Meta:

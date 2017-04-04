@@ -3,11 +3,18 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form>
-    Star name: <br>
-    <input type="text", name="name"><br>
+    Temperature range: <br>
+    <input type="char", name="teff_min"><br>
+    <input type="char", name="teff_max"><br>
+    logg range: <br>
+    <input type="char", name="logg_min"><br>
+    <input type="char", name="logg_max"><br>
     <input type="submit" value="Submit">
 </form>
 
+
+Teff min = {{min_teff}}<br> 
+Teff max = {{max_teff}}
 {% if output %}
     <ul>
     {% for name in output %}
