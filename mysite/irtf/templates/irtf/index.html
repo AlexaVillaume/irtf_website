@@ -1,7 +1,5 @@
 <h1> The Extended IRTF Library </h1>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
 <form>
     Temperature range: <br>
     <input type="char", name="teff_min"><br>
@@ -12,9 +10,15 @@
     <input type="submit" value="Submit">
 </form>
 
+{% if download_form %}
+<form action="% url 'download_data' %">
+    {{ download_form.as_p }}
+    <p>
+    <input type="submit" class="btn" name="submit" value="Download" />
+    </p>
+</form>
+{% endif %}
 
-Teff min = {{min_teff}}<br> 
-Teff max = {{max_teff}}
 {% if output %}
     <ul>
     {% for name in output %}
