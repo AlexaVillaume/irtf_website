@@ -1,6 +1,7 @@
 <h1> The Extended IRTF Library </h1>
 
-<form>
+<form action="/irtf/" method="POST">
+    {% csrf_token %}
     Temperature range: <br>
     <input type="char", name="teff_min"><br>
     <input type="char", name="teff_max"><br>
@@ -11,7 +12,8 @@
 </form>
 
 {% if download_form %}
-<form action="% url 'download_data' %">
+<form action="/irtf/download/" method="POST">
+    {% csrf_token %}
     {{ download_form.as_p }}
     <p>
     <input type="submit" class="btn" name="submit" value="Download" />

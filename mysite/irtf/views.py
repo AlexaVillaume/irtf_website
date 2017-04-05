@@ -12,31 +12,32 @@ import numpy as np
 
 def index(request):
 
-    #form = IndexForm(request.POST or None)
     if request.method == 'POST':
         form = IndexForm(request.POST)
-    #    if form.is_valid():
-    #        return HttpResponseRedirect('/thanks/')
+        if form.is_valid():
+            teff_min = request.POST['teff_min']
+            teff_max = request.POST['teff_max']
+            logg_min = request.POST['logg_min']
+            logg_max = request.POST['logg_max']
+            stars = Targets.objects.filter(teff__range=(teff_min, teff_max),
+                                           logg__range=(logg_min, logg_max))
+
+            download = DownloadForm(initial={
+                    'teff_min': teff_min,
+                    'teff_max': teff_max,
+                    'logg_min': logg_min,
+                    'logg_max': logg_max,
+                    })
+
+            context = {
+                        'form': form,
+                        'output': stars,
+                        'download_form': download
+                    }
+            template = loader.get_template('irtf/index.html')
+
     else:
         form = IndexForm()
-
-    teff_min, teff_max = request.GET.get('teff_min'), request.GET.get('teff_max')
-    logg_min, logg_max = request.GET.get('logg_min'), request.GET.get('logg_max')
-    stars = Targets.objects.filter(teff__range=(teff_min, teff_max),
-                                   logg__range=(logg_min, logg_max))
-
-    download = DownloadForm(initial={
-            'teff_min': teff_min,
-            'teff_max': teff_max,
-            'logg_min': logg_min,
-            'logg_max': logg_max,
-            })
-
-    context = {
-                'output': stars,
-                'download_form': download
-            }
-    template = loader.get_template('irtf/index.html')
 
     return HttpResponse(template.render(context, request))
 
@@ -46,8 +47,10 @@ def get_csv_data(teff_min, teff_max, logg_min, logg_max):
 
 def download_data(request):
 
-    teff_min, teff_max = request.GET.get('teff_min'), request.GET.get('teff_max')
-    logg_min, logg_max = request.GET.get('logg_min'), request.GET.get('logg_max')
+    teff_min = request.POST['teff_min']
+    teff_max = request.POST['teff_max']
+    logg_min = request.POST['logg_min']
+    logg_max = request.POST['logg_max']
     stars = get_csv_data(teff_min, teff_max, logg_min, logg_max)
 
     #fname = 'irtf_test.csv'
