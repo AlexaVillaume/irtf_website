@@ -53,13 +53,21 @@ def download_data(request):
     logg_max = request.POST['logg_max']
     stars = get_csv_data(teff_min, teff_max, logg_min, logg_max)
 
+
+    #response = HttpResponse(content_type='text/plain')
+    #response['Content-Disposition'] = 'attachment; filename="irtf_test.dat"'
+
+    #writer = open(response, 'r+')
+    #for star in stars:
+    #    writer.write(star.name)
+
     #fname = 'irtf_test.csv'
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="irtf_test.csv"'
 
     writer = csv.writer(response)
     for star in stars:
-        writer.writerow(star)
+        writer.writerow([star.name])
 
     return response
 
