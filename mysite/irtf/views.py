@@ -20,7 +20,8 @@ def index(request):
             logg_min = request.POST['logg_min']
             logg_max = request.POST['logg_max']
             stars = Targets.objects.filter(teff__range=(teff_min, teff_max),
-                                           logg__range=(logg_min, logg_max))
+                                           logg__range=(logg_min, logg_max)).exclude(
+                                            irtf_spec__isnull=True)
 
             download = DownloadForm(initial={
                     'teff_min': teff_min,
@@ -43,7 +44,8 @@ def index(request):
 
 def get_csv_data(teff_min, teff_max, logg_min, logg_max):
     return Targets.objects.filter(teff__range=(teff_min, teff_max),
-                                  logg__range=(logg_min, logg_max))
+                                  logg__range=(logg_min, logg_max)).exclude(
+                                          irtf_spec__isnull=True)
 
 def download_data(request):
 
@@ -61,13 +63,12 @@ def download_data(request):
     #for star in stars:
     #    writer.write(star.name)
 
-    #fname = 'irtf_test.csv'
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="irtf_test.csv"'
 
     writer = csv.writer(response)
     for star in stars:
-        writer.writerow([star.name])
+        writer.writerow([star.name, star.teff, star.logg, star.fe_h, star.irtf_spec])
 
     return response
 
