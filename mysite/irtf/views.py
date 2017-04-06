@@ -7,6 +7,7 @@ from django.shortcuts import render
 from .models import Targets
 from .forms import IndexForm, DownloadForm
 
+import h5py
 import csv
 import numpy as np
 
@@ -56,19 +57,22 @@ def download_data(request):
     stars = get_csv_data(teff_min, teff_max, logg_min, logg_max)
 
 
-    #response = HttpResponse(content_type='text/plain')
-    #response['Content-Disposition'] = 'attachment; filename="irtf_test.dat"'
+    #response = HttpResponse(content_type='application/hdf5')
+    #response['Content-Disposition'] = 'attachment; filename="irtf_test.hdf5"'
 
-    #writer = open(response, 'r+')
-    #for star in stars:
-    #    writer.write(star.name)
+    #h = h5py.File(response)
+    #h.create_dataset('Name', data=stars[0].name)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="irtf_test.csv"'
 
+    props = ['name', 'teff', 'logg', 'fe_h']
     writer = csv.writer(response)
     for star in stars:
-        writer.writerow([star.name, star.teff, star.logg, star.fe_h, star.irtf_spec])
+        row = []
+        for prop in props:
+            row.append(getattr(star, prop))
+        writer.writerow(row)
 
     return response
 
