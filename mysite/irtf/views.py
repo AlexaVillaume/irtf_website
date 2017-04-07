@@ -12,36 +12,67 @@ import csv
 import numpy as np
 
 def index(request):
+    try:
+        teff_min = request.POST['teff_min']
+        teff_max = request.POST['teff_max']
+        logg_min = request.POST['logg_min']
+        logg_max = request.POST['logg_max']
 
-    if request.method == 'POST':
-        form = IndexForm(request.POST)
-        if form.is_valid():
-            teff_min = request.POST['teff_min']
-            teff_max = request.POST['teff_max']
-            logg_min = request.POST['logg_min']
-            logg_max = request.POST['logg_max']
-            stars = Targets.objects.filter(teff__range=(teff_min, teff_max),
-                                           logg__range=(logg_min, logg_max)).exclude(
-                                            irtf_spec__isnull=True)
 
-            download = DownloadForm(initial={
-                    'teff_min': teff_min,
-                    'teff_max': teff_max,
-                    'logg_min': logg_min,
-                    'logg_max': logg_max,
-                    })
-
-            context = {
-                        'form': form,
-                        'output': stars,
-                        'download_form': download
-                    }
-            template = loader.get_template('irtf/index.html')
+    except:
+        return render(request, 'irtf/index.html', {
+            'error_message': "Something is not right"
+            })
 
     else:
-        form = IndexForm()
+        form = IndexForm(request.POST)
+        stars = Targets.objects.filter(teff__range=(teff_min, teff_max),
+                                       logg__range=(logg_min, logg_max)).exclude(
+                                        irtf_spec__isnull=True)
+        download = DownloadForm(initial={
+                'teff_min': teff_min,
+                'teff_max': teff_max,
+                'logg_min': logg_min,
+                'logg_max': logg_max,
+                })
 
-    return HttpResponse(template.render(context, request))
+        context = {
+                    'form': form,
+                    'output': stars,
+                    'download_form': download
+                }
+        template = loader.get_template('irtf/index.html')
+
+        return HttpResponse(template.render(context, request))
+
+#def index(request):
+
+#    if request.method == "POST":
+#        form = IndexForm(request.POST)
+#        if form.is_valid():
+#            teff_min = request.POST['teff_min']
+#            teff_max = request.POST['teff_max']
+#            logg_min = request.POST['logg_min']
+#            logg_max = request.POST['logg_max']
+#            stars = Targets.objects.filter(teff__range=(teff_min, teff_max),
+#                                           logg__range=(logg_min, logg_max)).exclude(
+#                                            irtf_spec__isnull=True)
+
+#            download = DownloadForm(initial={
+#                    'teff_min': teff_min,
+#                    'teff_max': teff_max,
+#                    'logg_min': logg_min,
+#                    'logg_max': logg_max,
+#                    })
+
+#            context = {
+#                        'form': form,
+#                        'output': stars,
+#                        'download_form': download
+#                    }
+#            template = loader.get_template('irtf/index.html')
+
+#    return HttpResponse(template.render(context, request))
 
 def get_csv_data(teff_min, teff_max, logg_min, logg_max):
     return Targets.objects.filter(teff__range=(teff_min, teff_max),
@@ -66,6 +97,11 @@ def download_data(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="irtf_test.csv"'
 
+
+    ## This gives all the attrs in the model
+    ## would like to grab the attributes and
+    ## use them below
+    # Targets.__doc__
     props = ['name', 'teff', 'logg', 'fe_h']
     writer = csv.writer(response)
     for star in stars:
