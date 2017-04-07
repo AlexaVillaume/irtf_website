@@ -1,6 +1,10 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'irtf/style.css' %}" />
+
 <h1> The Extended IRTF Library </h1>
 
-<form action="/irtf/" method="POST">
+<form action="." method="POST">
     {% csrf_token %}
     Temperature range: <br>
     <input type="char", name="teff_min"><br>
