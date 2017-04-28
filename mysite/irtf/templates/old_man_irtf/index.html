@@ -1,0 +1,37 @@
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static "irtf/style.css" %}" >
+
+<h1> The Extended IRTF Library </h1>
+
+<form action="." method="POST">
+    {% csrf_token %}
+    Temperature range: <br>
+    <input type="char", name="teff_min"><br>
+    <input type="char", name="teff_max"><br>
+    logg range: <br>
+    <input type="char", name="logg_min"><br>
+    <input type="char", name="logg_max"><br>
+    <input type="submit" value="Submit">
+</form>
+
+{% if download_form %}
+<form action="/irtf/download/" method="POST">
+    {% csrf_token %}
+    {{ download_form.as_p }}
+    <p>
+    <input type="submit" class="btn" name="submit" value="Download" />
+    </p>
+</form>
+{% endif %}
+
+{% if output %}
+    <ul>
+    {% for name in output %}
+        <li>{{name}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No stars.</p>
+{% endif %}

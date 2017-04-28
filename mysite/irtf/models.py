@@ -233,7 +233,7 @@ class Targets(models.Model):
     sdss_z_error = models.FloatField(blank=True, null=True)
 
     def __str__(self):
-        return 'Name: {0}, MILES ID: {1}, Teff {2}'.format(self.name, self.miles, self.teff)
+        return self.name
 
     class Meta:
         managed = True
