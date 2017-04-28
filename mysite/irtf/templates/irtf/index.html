@@ -10,22 +10,22 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="{% static "irtf/favicon.ico" %}">
 
     <title>IRTF Library</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static "irtf/dist/css/bootstrap.min.css" %}" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="{% static "irtf/assets/css/ie10-viewport-bug-workaround.css" %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="{% static "irtf/cover.css" %}" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="{% static "irtf/assets/js/ie-emulation-modes-warning.js" %}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -42,14 +42,13 @@
 
         <div class="cover-container">
 
-          <div class="masthead clearfix">
+           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">IRTF</h3>
+               <!-- <h3 class="masthead-brand">IRTF</h3> -->
               <nav>
                 <ul class="nav masthead-nav">
                   <li class="active"><a href="#">Home</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li><a href="#">Explore</a></li>
                 </ul>
               </nav>
             </div>
@@ -59,16 +58,13 @@
             <h1 class="cover-heading">The IRTF Spectral Library</h1>
             <p class="lead">The Extended IRTF Spectra Library consists of 284 stars spanning 0.7-2.5 microns observed on the medium-resolution
             infrared spectrograph, SpeX, at the 3.0 meter NASA Infrared Telescope Facility (IRTF).</p>
-            <p> Star exploring now.</p>
-            <p class="lead">
+            <!-- <p class="lead">
                <form action="." method="POST">
                     {% csrf_token %}
-                    Temperature range: <br>
-                    <input type="char", name="teff_min"><br>
-                    <input type="char", name="teff_max"><br>
-                    logg range: <br>
-                    <input type="char", name="logg_min"><br>
-                    <input type="char", name="logg_max"><br>
+                    Teff low: <input type="char", name="teff_min"><br>
+                    Teff high: <input type="char", name="teff_max">
+                    logg low: <input type="char", name="logg_min"><br>
+                    logg high: <input type="char", name="logg_max"><br>
                     <input type="submit" value="Submit">
                 </form>
 
@@ -82,11 +78,12 @@
                 </form>
                 {% endif %}
 
-            </p>
+            </p> -->
           </div>
 
           <div class="mastfoot">
             <div class="inner">
+              <p> For questions regarding the Extended IRTF Library or the website contact avillaum AT ucsc DOT edu </p> 
               <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
             </div>
           </div>
@@ -101,9 +98,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{% static "assets/js/vendor/jquery.min.js" %}"><\/script>')</script>
+    <script src="{% static "irtf/dist/js/bootstrap.min.js" %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="{% static "irtf/assets/js/ie10-viewport-bug-workaround.js" %}"></script>
   </body>
 </html>
