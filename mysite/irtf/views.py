@@ -3,15 +3,22 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render
+from django.core import serializers
 
 from .models import Targets
-from .forms import IndexForm, DownloadForm
+from .forms import ExploreForm, DownloadForm
 
+import json
 import h5py
 import csv
 import numpy as np
 
 def index(request):
+        template = loader.get_template('irtf/index.html')
+
+        return HttpResponse(template.render(request))
+
+def explore(request):
     try:
         teff_min = request.POST['teff_min']
         teff_max = request.POST['teff_max']
@@ -20,12 +27,12 @@ def index(request):
 
 
     except:
-        return render(request, 'irtf/index.html', {
+        return render(request, 'irtf/explore.html', {
             'error_message': "Something is not right"
             })
 
     else:
-        form = IndexForm(request.POST)
+        form = ExploreForm(request.POST)
         stars = Targets.objects.filter(teff__range=(teff_min, teff_max),
                                        logg__range=(logg_min, logg_max)).exclude(
                                         irtf_spec__isnull=True)
@@ -41,11 +48,12 @@ def index(request):
                     'output': stars,
                     'download_form': download
                 }
-        template = loader.get_template('irtf/index.html')
+        template = loader.get_template('irtf/explore.html')
 
         return HttpResponse(template.render(context, request))
 
-def get_csv_data(teff_min, teff_max, logg_min, logg_max):
+
+def get_data(teff_min, teff_max, logg_min, logg_max):
     return Targets.objects.filter(teff__range=(teff_min, teff_max),
                                   logg__range=(logg_min, logg_max)).exclude(
                                           irtf_spec__isnull=True)
@@ -56,30 +64,13 @@ def download_data(request):
     teff_max = request.POST['teff_max']
     logg_min = request.POST['logg_min']
     logg_max = request.POST['logg_max']
-    stars = get_csv_data(teff_min, teff_max, logg_min, logg_max)
+    stars = get_data(teff_min, teff_max, logg_min, logg_max)
 
 
-    #response = HttpResponse(content_type='application/hdf5')
-    #response['Content-Disposition'] = 'attachment; filename="irtf_test.hdf5"'
+    data = serializers.serialize('json', stars)
 
-    #h = h5py.File(response)
-    #h.create_dataset('Name', data=stars[0].name)
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="irtf_test.csv"'
-
-
-    ## This gives all the attrs in the model
-    ## would like to grab the attributes and
-    ## use them below
-    # Targets.__doc__
-    props = ['name', 'teff', 'logg', 'fe_h']
-    writer = csv.writer(response)
-    for star in stars:
-        row = []
-        for prop in props:
-            row.append(getattr(star, prop))
-        writer.writerow(row)
+    response = HttpResponse(data, content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename=irtf_test.json'
 
     return response
 

@@ -55,9 +55,53 @@
           </div>
 
           <div class="inner cover">
-            <h1 class="cover-heading">The IRTF Spectral Library</h1>
-            <p class="lead">The Extended IRTF Spectra Library consists of 284 stars spanning 0.7-2.5 microns observed on the medium-resolution
-            infrared spectrograph, SpeX, at the 3.0 meter NASA Infrared Telescope Facility (IRTF).</p>
+             <p class="lead">
+               <form class="form-inline" action="." method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="teff_min">Min Teff</label>
+                        <input type="char" class="form-control" name="teff_min"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="teff_max">Max Teff</label>
+                        <input type="char" class="form-control" name="teff_max"> 
+                    </div>
+                    </br>
+                    <div class="form-group">
+                        <label for="logg_min">Min logg</label>
+                        <input type="char" class="form-control" name="logg_min"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="logg_max">Max logg</label>
+                        <input type="char" class="form-control" name="logg_max"> 
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+
+                {% if output %}
+                    <table class="table table-hover">
+                        <tbody>    
+                        {% for star in output %}
+                            <tr>
+                                <td>{{star.name}}</td><td>{{star.miles}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>    
+                    </table>
+                {% endif %}
+
+               <!-- {% if download_form %}
+                <form action="/irtf/download/" method="POST">
+                    {% csrf_token %}
+                    {{ download_form.as_p }}
+                    <p>
+                    <input type="submit" class="btn" name="submit" value="Download" />
+                    </p>
+                </form>
+                {% endif %} -->
+
+            </p> 
           </div>
 
           <div class="mastfoot">
