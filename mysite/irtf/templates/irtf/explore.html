@@ -75,12 +75,28 @@
                         <label for="logg_max">Max logg</label>
                         <input type="char" class="form-control" name="logg_max"> 
                     </div>
-                    <br>
+                    <p>
                     <button type="submit" class="btn btn-default">Submit</button>
+                    </p>
                 </form>
+                <br>
+
+               {% if download_form %}
+                <form class="form-inline" action="/irtf/download/" method="POST">
+                    {% csrf_token %}
+                    {{ download_form.as_p }}
+                    <p>
+                    <button type="submit" class="btn btn-default", value="Download">Download</button>
+                    </p>
+                </form>
+                {% endif %}
 
                 {% if output %}
                     <table class="table table-hover">
+                        <thead>
+                        <th>Name</th> <th> MILES ID</th>
+                        </thead>
+                        <br>
                         <tbody>    
                         {% for star in output %}
                             <tr>
@@ -91,15 +107,6 @@
                     </table>
                 {% endif %}
 
-               <!-- {% if download_form %}
-                <form action="/irtf/download/" method="POST">
-                    {% csrf_token %}
-                    {{ download_form.as_p }}
-                    <p>
-                    <input type="submit" class="btn" name="submit" value="Download" />
-                    </p>
-                </form>
-                {% endif %} -->
 
             </p> 
           </div>
