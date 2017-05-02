@@ -54,62 +54,64 @@
             </div>
           </div>
 
-          <div class="inner cover">
-             <p class="lead">
-               <form class="form-inline" action="." method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="teff_min">Min Teff</label>
-                        <input type="char" class="form-control" name="teff_min"> 
-                    </div>
-                    <div class="form-group">
-                        <label for="teff_max">Max Teff</label>
-                        <input type="char" class="form-control" name="teff_max"> 
-                    </div>
-                    </br>
-                    <div class="form-group">
-                        <label for="logg_min">Min logg</label>
-                        <input type="char" class="form-control" name="logg_min"> 
-                    </div>
-                    <div class="form-group">
-                        <label for="logg_max">Max logg</label>
-                        <input type="char" class="form-control" name="logg_max"> 
-                    </div>
-                    <p>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                    </p>
-                </form>
-                <br>
+            
 
-               {% if download_form %}
-                <form class="form-inline" action="/irtf/download/" method="POST">
+            <div class="inner cover">
+                <p class="lead">
+                <form class="form-inline" action="." method="POST">
                     {% csrf_token %}
-                    {{ download_form.as_p }}
-                    <p>
-                    <button type="submit" class="btn btn-default", value="Download">Download</button>
-                    </p>
+                    <h4> Temperature </h4><br>
+                       
+                        <div class="form-group">
+                            <label for="teff_min">Min</label>
+                            <input type="char" class="form-control" name="teff_min">
+                        </div>
+                        <div class="form-group">
+                            <label for="teff_max">Max</label>
+                            <input type="char" class="form-control" name="teff_max">
+                        </div>
+   
+                    <h4> Metallicity </h4><br>
+                        <div class="form-group">
+                            <label for="feh_min">Min</label>
+                            <input type="char" class="form-control" name="feh_min">
+                        </div>
+                        <div class="form-group">
+                            <label for="feh_max">Max</label>
+                            <input type="char" class="form-control" name="feh_max">
+                        </div>
+                    
+                    <h4> Surface Gravity </h4> <br>
+                        <div class="form-group">
+                            <label for="logg_min">Min</label>
+                            <input type="char" class="form-control" name="logg_min">
+                        </div>
+                        <div class="form-group">
+                            <label for="logg_max">Max</label>
+                            <input type="char" class="form-control" name="logg_max">
+                        </div>
+                   
+                    <p> 
+                         <button type="submit" class="btn btn-default">Get Data</button>
+                    </p> 
+
                 </form>
+
+                {% if download_form %}
+                    <form class="form-inline" action="/irtf/download/" method="POST">
+                        {% csrf_token %}
+                        {{download_form.as_p}}
+                        <p>
+                        <button type="submit" class="btn btn=default", value="Download">
+                            Download
+                        </button>
+                        </p>
+                    </form>
                 {% endif %}
 
-                {% if output %}
-                    <table class="table table-hover">
-                        <thead>
-                        <th>Name</th> <th> MILES ID</th>
-                        </thead>
-                        <br>
-                        <tbody>    
-                        {% for star in output %}
-                            <tr>
-                                <td>{{star.name}}</td><td>{{star.miles}}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>    
-                    </table>
-                {% endif %}
+            </div>
+    
 
-
-            </p> 
-          </div>
 
           <div class="mastfoot">
             <div class="inner">
