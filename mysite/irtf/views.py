@@ -65,6 +65,10 @@ def get_data(teff_min, teff_max, feh_min, feh_max, logg_min, logg_max):
                                   fe_h__range=(feh_min, feh_max)).exclude(
                                           irtf_spec__isnull=True)
 
+def get_spec(star):
+
+    return [1,2,3]
+
 def download_data(request):
 
     teff_min = request.POST['teff_min']
@@ -75,10 +79,14 @@ def download_data(request):
     logg_max = request.POST['logg_max']
     stars = get_data(teff_min, teff_max, feh_min, feh_max, logg_min, logg_max)
 
-
     columns = ('name', 'miles', 'ra', 'dec', 'teff', 'logg', 'fe_h', 'v',
-               'zred', 'shapeissue', 'paramissue', 'qualityissue')
-    data = serializers.serialize('json', stars, fields=columns)
+               'zred', 'shapeissue', 'paramissue', 'qualityissue', 'irtf_spec')
+    data = json.loads(serializers.serialize('json', stars, fields=columns))
+
+    for star in data:
+        star['fields']['irtf_spec'] = get_spec(star)
+
+    data = json.dumps(data)
 
     response = HttpResponse(data, content_type='application/json')
     response['Content-Disposition'] = 'attachment; filename=irtf_test.json'
