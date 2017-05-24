@@ -67,7 +67,10 @@ def get_data(teff_min, teff_max, feh_min, feh_max, logg_min, logg_max):
 
 def get_spec(star):
 
-    return [1,2,3]
+    fname = '/Users/alexa/Documents/irtf_website/mysite/{0}.dat'
+    spec = np.loadtxt(fname.format(star['fields']['irtf_spec']))
+
+    return [list(spec[:,0]), list(spec[:,1]), list(spec[:,2])]
 
 def download_data(request):
 
@@ -84,7 +87,10 @@ def download_data(request):
     data = json.loads(serializers.serialize('json', stars, fields=columns))
 
     for star in data:
-        star['fields']['irtf_spec'] = get_spec(star)
+        spec = get_spec(star)
+        star['fields']['irtf_wave'] = spec[0]
+        star['fields']['irtf_spec'] = spec[1]
+        star['fields']['irtf_unc'] = spec[2]
 
     data = json.dumps(data)
 
